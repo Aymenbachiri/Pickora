@@ -12,12 +12,7 @@ type ViewProps = BaseProps & View["props"];
 export const MyView = forwardRef<View, ViewProps>(
   ({ className, children, style, ...props }, ref) => {
     return (
-      <View
-        ref={ref}
-        className={cn("flex-1", className)}
-        style={style}
-        {...props}
-      >
+      <View ref={ref} className={cn("", className)} style={style} {...props}>
         {children}
       </View>
     );
