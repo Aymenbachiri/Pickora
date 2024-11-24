@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import "../../global.css";
 import { StatusBar, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
@@ -9,25 +9,8 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar backgroundColor={colorScheme === "dark" ? "#000" : "#fff"} />
       <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            headerTitle: "Index",
-            headerRight: () => (
-              <View style={{ marginRight: 10 }}>
-                <TouchableOpacity onPress={toggleColorScheme}>
-                  <Feather
-                    name={colorScheme === "dark" ? "sun" : "moon"}
-                    size={24}
-                    color={"#000"}
-                  />
-                </TouchableOpacity>
-              </View>
-            ),
-          }}
-        />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </>
   );
