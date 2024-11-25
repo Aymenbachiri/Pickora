@@ -4,6 +4,7 @@ import { H2 } from "../components/common/H2";
 import { MyText } from "../components/common/MyText";
 import { MyView } from "../components/common/MyView";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import "react-native-gesture-handler";
 
 export default function Home() {
   return (

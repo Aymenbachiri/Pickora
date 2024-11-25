@@ -4,7 +4,9 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Button, TextInput } from "react-native";
-import { toast } from "sonner-native";
+import { toast, Toaster } from "sonner-native";
+import "react-native-gesture-handler";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function signup() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -36,8 +38,12 @@ export default function signup() {
   };
 
   return (
-    <MyView>
-      <Button onPress={() => toast("hello")} title="Show test toast" />
+    <MyView className="flex-1">
+      <Toaster position="bottom-center" />
+      <Button
+        onPress={() => toast.error("Operation successful!")}
+        title="Show test toast"
+      />
       <TextInput
         autoCapitalize="none"
         value={emailAddress}
