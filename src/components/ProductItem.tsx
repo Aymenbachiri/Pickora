@@ -12,7 +12,7 @@ export default function ProductItem({ product }: { product: Product }) {
         justifyContent: "center",
         alignItems: "center",
       }}
-      className="mt-6"
+      className="my-6 dark:bg-black dark:text-white"
     >
       <Link href={`/products/${product.id}` as RelativePathString}>
         <View className="max-w-md w-full">

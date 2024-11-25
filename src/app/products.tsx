@@ -18,7 +18,7 @@ export default function Products() {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }} className="flex-1 bg-white dark:bg-black">
       <MyView>
         <H1 className="text-center mt-2">Our Latest Products</H1>
         <MyText className="mt-4">

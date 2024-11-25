@@ -7,7 +7,7 @@ import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 
 export default function Home() {
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }} className="flex-1 bg-white dark:bg-black">
       <H2 className="text-center mt-3">Welome to Pickora</H2>
       <H1 className="text-center mt-10">Where Style Meets Savings</H1>
       <MyText className="text-center mt-10">

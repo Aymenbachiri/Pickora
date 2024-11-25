@@ -19,18 +19,18 @@ export default function Product() {
 
   if (loading) {
     return (
-      <MyView className="flex-1 bg-white p-4">
-        <MyView className="w-full h-64 bg-gray-300 rounded-lg mb-4 animate-pulse" />
-        <MyView className="w-3/4 h-6 bg-gray-300 rounded mb-2 animate-pulse" />
-        <MyView className="w-1/2 h-6 bg-gray-300 rounded mb-4 animate-pulse" />
-        <MyView className="w-full h-24 bg-gray-300 rounded mb-4 animate-pulse" />
-        <MyView className="w-3/4 h-12 bg-gray-300 rounded-lg mt-8 animate-pulse" />
+      <MyView className="flex-1 bg-white p-4 dark:bg-black">
+        <MyView className="w-full h-64 bg-gray-300 dark:bg-gray-600 rounded-lg mb-4 animate-pulse" />
+        <MyView className="w-3/4 h-6 bg-gray-300 dark:bg-gray-600  rounded mb-2 animate-pulse" />
+        <MyView className="w-1/2 h-6 bg-gray-300 dark:bg-gray-600 rounded mb-4 animate-pulse" />
+        <MyView className="w-full h-24 bg-gray-300 dark:bg-gray-600 rounded mb-4 animate-pulse" />
+        <MyView className="w-3/4 h-12 bg-gray-300 dark:bg-gray-600 rounded-lg mt-8 animate-pulse" />
       </MyView>
     );
   }
 
   return (
-    <MyView className="flex-1 bg-white p-4">
+    <MyView className="flex-1 bg-white p-4 dark:bg-black dark:text-white">
       <Image
         source={{ uri: product?.imageUrl }}
         className="w-full h-64 rounded-lg mb-4"
