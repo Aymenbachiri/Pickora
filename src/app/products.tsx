@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { H1 } from "../components/common/H1";
 import { MyView } from "../components/common/MyView";
 import { MyText } from "../components/common/MyText";
@@ -28,7 +28,7 @@ export default function Products() {
       </MyView>
       {loading && [...Array(5)].map(() => <ProductsSkeleton />)}
       {products.map((product) => (
-        <ProductItem product={product} key={product.id} />
+        <ProductItem product={product} key={Math.random()} />
       ))}
     </ScrollView>
   );

@@ -17,7 +17,6 @@ export default function RootLayout() {
             ),
           }}
         />
-
         <Tabs.Screen
           name="products"
           options={{
@@ -36,6 +35,13 @@ export default function RootLayout() {
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="user-cog" size={24} color={color} />
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="products/[id]"
+          options={{
+            href: null,
+            title: "",
           }}
         />
       </Tabs>
