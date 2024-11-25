@@ -4,14 +4,18 @@ import { H2 } from "../components/common/H2";
 import { useColorScheme } from "nativewind";
 import { TouchableOpacity } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function Profile() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { user } = useUser();
 
   return (
     <MyView className="flex-1  p-4 dark:bg-black">
       <MyView className="flex justify-between items-center flex-row gap-4">
         <H1>Profile</H1>
+        <H2>{user?.emailAddresses[0].emailAddress}</H2>
+        <H2>{user?.username}</H2>
         <TouchableOpacity onPress={toggleColorScheme}>
           <Feather
             name={colorScheme === "dark" ? "sun" : "moon"}
