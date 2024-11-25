@@ -29,10 +29,12 @@ export default function SignUp() {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
       setPendingVerification(true);
+      toast.success("user signed up successfully");
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+      toast.error(JSON.stringify(err, null, 2));
     }
   };
 
@@ -48,46 +50,52 @@ export default function SignUp() {
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.replace("/");
+        toast.success("code has been verified successfully");
+        router.replace("/profile");
       } else {
         console.error(JSON.stringify(completeSignUp, null, 2));
+        toast.error(JSON.stringify(completeSignUp, null, 2));
       }
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+      toast.error(JSON.stringify(err, null, 2));
     }
   };
 
   return (
-    <MyView className="flex-1">
-      {!pendingVerification && (
-        <>
-          <TextInput
-            autoCapitalize="none"
-            value={emailAddress}
-            placeholder="Email..."
-            onChangeText={(email) => setEmailAddress(email)}
-          />
-          <TextInput
-            value={password}
-            placeholder="Password..."
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-          />
-          <Button title="Sign Up" onPress={onSignUpPress} />
-        </>
-      )}
-      {pendingVerification && (
-        <>
-          <TextInput
-            value={code}
-            placeholder="Code..."
-            onChangeText={(code) => setCode(code)}
-          />
-          <Button title="Verify Email" onPress={onPressVerify} />
-        </>
-      )}
-    </MyView>
+    <>
+      <Toaster position="bottom-center" />
+      <MyView className="flex-1">
+        {!pendingVerification && (
+          <>
+            <TextInput
+              autoCapitalize="none"
+              value={emailAddress}
+              placeholder="Email..."
+              onChangeText={(email) => setEmailAddress(email)}
+            />
+            <TextInput
+              value={password}
+              placeholder="Password..."
+              secureTextEntry={true}
+              onChangeText={(password) => setPassword(password)}
+            />
+            <Button title="Sign Up" onPress={onSignUpPress} />
+          </>
+        )}
+        {pendingVerification && (
+          <>
+            <TextInput
+              value={code}
+              placeholder="Code..."
+              onChangeText={(code) => setCode(code)}
+            />
+            <Button title="Verify Email" onPress={onPressVerify} />
+          </>
+        )}
+      </MyView>
+    </>
   );
 }

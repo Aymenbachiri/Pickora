@@ -27,7 +27,7 @@ export default function SignIn() {
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
         toast.success("Sign-in successful!");
-        router.replace("/");
+        router.replace("/profile");
       } else {
         console.log("Sign in status:", signInAttempt.status);
         // Handle incomplete status
