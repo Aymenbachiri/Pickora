@@ -4,7 +4,7 @@
     "slug": "Pickora",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/android-icon-192x192.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,14 +13,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/android-icon-192x192.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.aymen99.Pickora"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/android-icon-192x192.png"
     },
     "plugins": [
       "expo-router",
@@ -33,11 +34,18 @@
           "backgroundColor": "#ffffff"
         }
       ],
-
       "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d6d4d2d3-dd99-46ce-8633-0e9dd523786c"
+      }
     }
   }
 }
