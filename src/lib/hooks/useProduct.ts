@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Product } from "../type/types";
+import type { Product } from "../types/types";
 import { API_URL } from "@/src/components/common/Constants";
 
 export function useProduct({ id }: { id: string }) {

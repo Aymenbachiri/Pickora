@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "@/src/components/common/Constants";
-import type { Product } from "../type/types";
+import type { Product } from "../types/types";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);

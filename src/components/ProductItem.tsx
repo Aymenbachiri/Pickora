@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import type { Product } from "../lib/type/types";
+import type { Product } from "../lib/types/types";
 import { Link, type RelativePathString } from "expo-router";
 
 export default function ProductItem({ product }: { product: Product }) {
