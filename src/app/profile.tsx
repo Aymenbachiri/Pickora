@@ -40,6 +40,9 @@ export default function Profile() {
           <Link href="/my-products">
             <H2>My products</H2>
           </Link>
+          <Link href="/cart">
+            <H2>Cart</H2>
+          </Link>
         </MyView>
 
         <MyView className="flex-1 flex gap-4 justify-center items-center p-4 dark:bg-black dark:text-white">

@@ -1,9 +1,23 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import type { Product } from "../lib/types/types";
 import { Link, type RelativePathString } from "expo-router";
+import { useCart } from "../lib/hooks/useCart";
 
 export default function ProductItem({ product }: { product: Product }) {
   const { title, description, category, imageUrl, price, creator } = product;
+  const { handleAddToCart } = useCart();
+
+  const handleClick = () => {
+    handleAddToCart(product);
+    Alert.alert(`${product.title} added to cart successfully!`);
+  };
 
   return (
     <ScrollView
@@ -47,7 +61,10 @@ export default function ProductItem({ product }: { product: Product }) {
                   <Text className="ml-1 text-gray-600">4.9 (120 reviews)</Text>
                 </View>
               </View>
-              <TouchableOpacity className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+              <TouchableOpacity
+                onPress={handleClick}
+                className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+              >
                 <Text className="text-center text-white font-bold">
                   Add to Cart
                 </Text>
