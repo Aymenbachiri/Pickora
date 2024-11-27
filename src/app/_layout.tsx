@@ -97,6 +97,13 @@ export default function RootLayout() {
                 title: "sell-product",
               }}
             />
+            <Tabs.Screen
+              name="my-products"
+              options={{
+                href: null,
+                title: "my-products",
+              }}
+            />
           </Tabs>
         </ClerkLoaded>
       </ClerkProvider>

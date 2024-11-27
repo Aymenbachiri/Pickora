@@ -1,3 +1,4 @@
+import { H2 } from "@/src/components/common/H2";
 import { MyText } from "@/src/components/common/MyText";
 import { MyView } from "@/src/components/common/MyView";
 import { useSignIn } from "@clerk/clerk-expo";
@@ -39,25 +40,35 @@ export default function SignIn() {
   }, [isLoaded, emailAddress, password]);
 
   return (
-    <MyView className="flex-1">
+    <MyView className="flex-1 dark:bg-black justify-center items-center gap-6">
       <Toaster position="bottom-center" />
-      <TextInput
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Email..."
-        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-      />
-      <TextInput
-        value={password}
-        placeholder="Password..."
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
+      <MyView className="flex w-full flex-col gap-2">
+        <H2 className="text-start">Email</H2>
+        <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
+          placeholder="aymen.bachiri99@gmail.com"
+          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+          className="dark:bg-white border p-4 w-full"
+        />
+      </MyView>
+
+      <MyView className="flex w-full flex-col gap-2">
+        <H2 className="text-start">Password</H2>
+
+        <TextInput
+          value={password}
+          placeholder="******"
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+          className="dark:bg-white border p-4 w-full"
+        />
+      </MyView>
       <Button title="Sign In" onPress={onSignInPress} />
-      <MyView>
+      <MyView className="flex justify-between items-center gap-4 flex-row">
         <MyText>Don't have an account?</MyText>
         <Link href={"/(auth)/signup"}>
-          <MyText>Sign up</MyText>
+          <MyText className="underline">Sign up</MyText>
         </Link>
       </MyView>
     </MyView>

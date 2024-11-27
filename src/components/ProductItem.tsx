@@ -14,8 +14,11 @@ export default function ProductItem({ product }: { product: Product }) {
       }}
       className="my-6 dark:bg-black dark:text-white"
     >
-      <Link href={`/products/${product.id}` as RelativePathString}>
-        <View className="max-w-md w-full">
+      <Link
+        className="w-full h-full"
+        href={`/products/${product.id}` as RelativePathString}
+      >
+        <View className="max-w-md w-full h-full">
           <View className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:shadow-3xl">
             <View className="relative">
               <View className="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-600 opacity-75" />

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button, TextInput, ActivityIndicator } from "react-native";
 import { toast, Toaster } from "sonner-native";
 import "react-native-gesture-handler";
+import { H2 } from "@/src/components/common/H2";
 
 export default function SignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -67,33 +68,45 @@ export default function SignUp() {
   return (
     <>
       <Toaster position="bottom-center" />
-      <MyView className="flex-1">
+      <MyView className="flex-1 dark:bg-black">
         {!pendingVerification && (
-          <>
-            <TextInput
-              autoCapitalize="none"
-              value={emailAddress}
-              placeholder="Email..."
-              onChangeText={(email) => setEmailAddress(email)}
-            />
-            <TextInput
-              value={password}
-              placeholder="Password..."
-              secureTextEntry={true}
-              onChangeText={(password) => setPassword(password)}
-            />
+          <MyView className="flex flex-1 w-full gap-4 justify-center items-center">
+            <MyView className="flex w-full flex-col gap-2">
+              <H2 className="text-start">Email</H2>
+              <TextInput
+                autoCapitalize="none"
+                value={emailAddress}
+                placeholder="aymen.bachiri99@gmail.com"
+                onChangeText={(email) => setEmailAddress(email)}
+                className="dark:bg-white border p-4 w-full"
+              />
+            </MyView>
+
+            <MyView className="flex w-full flex-col gap-2">
+              <H2 className="text-start">Password</H2>
+
+              <TextInput
+                value={password}
+                placeholder="******"
+                secureTextEntry={true}
+                onChangeText={(password) => setPassword(password)}
+                className="dark:bg-white border p-4 w-full"
+              />
+            </MyView>
             <Button title="Sign Up" onPress={onSignUpPress} />
-          </>
+          </MyView>
         )}
         {pendingVerification && (
-          <>
+          <MyView className="flex flex-1 w-full gap-4 justify-center items-center">
+            <H2 className="text-start">Enter the code sent to your email</H2>
             <TextInput
               value={code}
               placeholder="Code..."
               onChangeText={(code) => setCode(code)}
+              className="dark:bg-white border p-4 w-full"
             />
             <Button title="Verify Email" onPress={onPressVerify} />
-          </>
+          </MyView>
         )}
       </MyView>
     </>
