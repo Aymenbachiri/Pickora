@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Product } from "../types/types";
 import { useUser } from "@clerk/clerk-expo";
 import { API_URL } from "@/src/components/common/Constants";
+import { useProductUpdate } from "../providers/ProductUpdateProvider ";
 
 export function useMyProducts({ creator }: { creator: string | null }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { shouldRefreshProducts, triggerRefresh } = useProductUpdate();
 
   async function fetchProducts() {
     try {
@@ -18,6 +20,10 @@ export function useMyProducts({ creator }: { creator: string | null }) {
       }
       const data = await res.json();
       setProducts(data);
+
+      if (shouldRefreshProducts) {
+        triggerRefresh();
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -27,7 +33,7 @@ export function useMyProducts({ creator }: { creator: string | null }) {
 
   useEffect(() => {
     fetchProducts();
-  }, [creator]);
+  }, [creator, shouldRefreshProducts]);
 
   return { products, loading, error, setProducts };
 }

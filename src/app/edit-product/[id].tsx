@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { API_URL } from "@/src/components/common/Constants";
 import { ProductFormData, productSchema } from "@/src/lib/schema/productSchema";
+import { useProductUpdate } from "@/src/lib/providers/ProductUpdateProvider ";
 
 async function updateProduct(data: ProductFormData, id: string): Promise<void> {
   try {
@@ -55,6 +56,7 @@ export default function EditProduct() {
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { triggerRefresh } = useProductUpdate();
 
   const {
     control,
@@ -111,6 +113,7 @@ export default function EditProduct() {
         loading: "Updating product...",
         success: () => {
           reset();
+          triggerRefresh();
           router.push("/my-products");
           return "Product updated successfully!";
         },
@@ -317,23 +320,13 @@ export default function EditProduct() {
           )}
         </MyView>
 
-        <Button
-          title="Update Product"
-          onPress={handleSubmitWithLogging}
-          disabled={loading}
-        />
-
-        <TouchableOpacity onPress={handleSubmitWithLogging}>
-          {loading && (
-            <AntDesign
-              className="animate-spin"
-              name="loading1"
-              size={24}
-              color="black"
-            />
-          )}
-          <H2>Update Product</H2>
-        </TouchableOpacity>
+        <MyView className="mt-6">
+          <Button
+            title="Update Product"
+            onPress={handleSubmitWithLogging}
+            disabled={loading}
+          />
+        </MyView>
       </MyView>
     </ScrollView>
   );

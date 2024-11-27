@@ -5,6 +5,7 @@ import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { Toaster } from "sonner-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ProductUpdateProvider } from "../lib/providers/ProductUpdateProvider ";
 
 export default function RootLayout() {
   const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -43,76 +44,78 @@ export default function RootLayout() {
         publishableKey={CLERK_PUBLISHABLE_KEY}
         tokenCache={tokenCache}
       >
-        <ClerkLoaded>
-          <Toaster />
-          <Tabs>
-            <Tabs.Screen
-              name="index"
-              options={{
-                headerShown: false,
-                title: "Home",
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome size={28} name="home" color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="products"
-              options={{
-                headerShown: false,
-                title: "products",
-                tabBarIcon: ({ color }) => (
-                  <Feather name="box" size={24} color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="profile"
-              options={{
-                headerShown: false,
-                title: "Profile",
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome5 name="user-cog" size={24} color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="products/[id]"
-              options={{
-                href: null,
-                title: "",
-              }}
-            />
-            <Tabs.Screen
-              name="(auth)"
-              options={{
-                href: null,
-                title: "",
-              }}
-            />
-            <Tabs.Screen
-              name="sell-product"
-              options={{
-                href: null,
-                title: "sell-product",
-              }}
-            />
-            <Tabs.Screen
-              name="my-products"
-              options={{
-                href: null,
-                title: "my-products",
-              }}
-            />
-            <Tabs.Screen
-              name="edit-product/[id]"
-              options={{
-                href: null,
-                title: "Edit product",
-              }}
-            />
-          </Tabs>
-        </ClerkLoaded>
+        <ProductUpdateProvider>
+          <ClerkLoaded>
+            <Toaster />
+            <Tabs>
+              <Tabs.Screen
+                name="index"
+                options={{
+                  headerShown: false,
+                  title: "Home",
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome size={28} name="home" color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="products"
+                options={{
+                  headerShown: false,
+                  title: "products",
+                  tabBarIcon: ({ color }) => (
+                    <Feather name="box" size={24} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="profile"
+                options={{
+                  headerShown: false,
+                  title: "Profile",
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome5 name="user-cog" size={24} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="products/[id]"
+                options={{
+                  href: null,
+                  title: "",
+                }}
+              />
+              <Tabs.Screen
+                name="(auth)"
+                options={{
+                  href: null,
+                  title: "",
+                }}
+              />
+              <Tabs.Screen
+                name="sell-product"
+                options={{
+                  href: null,
+                  title: "sell-product",
+                }}
+              />
+              <Tabs.Screen
+                name="my-products"
+                options={{
+                  href: null,
+                  title: "my-products",
+                }}
+              />
+              <Tabs.Screen
+                name="edit-product/[id]"
+                options={{
+                  href: null,
+                  title: "Edit product",
+                }}
+              />
+            </Tabs>
+          </ClerkLoaded>
+        </ProductUpdateProvider>
       </ClerkProvider>
     </GestureHandlerRootView>
   );
