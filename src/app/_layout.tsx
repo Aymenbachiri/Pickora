@@ -104,6 +104,13 @@ export default function RootLayout() {
                 title: "my-products",
               }}
             />
+            <Tabs.Screen
+              name="edit-product/[id]"
+              options={{
+                href: null,
+                title: "Edit product",
+              }}
+            />
           </Tabs>
         </ClerkLoaded>
       </ClerkProvider>

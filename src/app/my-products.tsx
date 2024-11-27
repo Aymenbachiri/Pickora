@@ -11,7 +11,9 @@ import DashboardProductItem from "../components/DashboardProductItem";
 export default function MyProducts() {
   const { user } = useUser();
   const creator = user?.emailAddresses[0].emailAddress as string;
-  const { products, setProducts, loading, error } = useMyProducts({ creator });
+  const { products, setProducts, loading, error } = useMyProducts({
+    creator,
+  });
 
   const handleDeleteProduct = (productId: string) => {
     setProducts((products) =>

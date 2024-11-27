@@ -10,6 +10,7 @@ import React from "react";
 import type { Product } from "../lib/types/types";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { deleteProduct } from "../lib/helpers/deleteProduct";
+import { Link, RelativePathString } from "expo-router";
 
 export default function DashboardProductItem({
   product,
@@ -20,7 +21,6 @@ export default function DashboardProductItem({
 }) {
   const { id, title, description, category, imageUrl, price } = product;
   const handleDelete = async () => {
-    // Show confirmation dialog
     Alert.alert("Delete Product", `Are you sure you want to delete ${title}?`, [
       {
         text: "Cancel",
@@ -32,7 +32,6 @@ export default function DashboardProductItem({
         onPress: async () => {
           const success = await deleteProduct(id);
           if (success) {
-            // Call the onDelete callback to update the parent component's state
             onDelete(id);
             Alert.alert("Success", "Product deleted successfully");
           } else {
@@ -88,9 +87,12 @@ export default function DashboardProductItem({
               >
                 <FontAwesome6 name="trash-can" size={24} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity className=" bg-green-600 text-white p-3 font-bold rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+              <Link
+                href={`/edit-product/${id}` as RelativePathString}
+                className=" bg-green-600 text-white p-3 font-bold rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+              >
                 <FontAwesome6 name="edit" size={24} color="white" />
-              </TouchableOpacity>
+              </Link>
             </View>
           </View>
         </View>
