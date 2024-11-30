@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { API_URL } from "@/src/components/common/Constants";
+import { useProducts } from "../providers/ProductsContext";
 
 async function registerProduct(data: ProductFormData): Promise<void> {
   try {
@@ -44,6 +45,7 @@ export function useSellProduct() {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
   const router = useRouter();
+  const { fetchProducts } = useProducts();
 
   const {
     control,
@@ -81,6 +83,9 @@ export function useSellProduct() {
     setLoading(true);
     try {
       await registerProduct(data);
+
+      // Refetch products after successful product addition
+      await fetchProducts();
 
       Alert.alert("Success", "Product added successfully!");
       reset();

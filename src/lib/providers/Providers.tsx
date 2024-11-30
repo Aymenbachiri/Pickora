@@ -3,6 +3,7 @@ import { ProductUpdateProvider } from "./ProductUpdateProvider ";
 import { ReduxProvider } from "./ReduxProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import * as SecureStore from "expo-secure-store";
+import { ProductsProvider } from "./ProductsContext";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -40,11 +41,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ProductUpdateProvider>
-        <ReduxProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </ReduxProvider>
-      </ProductUpdateProvider>
+      <ProductsProvider>
+        <ProductUpdateProvider>
+          <ReduxProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </ReduxProvider>
+        </ProductUpdateProvider>
+      </ProductsProvider>
     </ClerkProvider>
   );
 }

@@ -3,8 +3,8 @@ import { H1 } from "../components/common/H1";
 import { MyView } from "../components/common/MyView";
 import { MyText } from "../components/common/MyText";
 import ProductItem from "../components/ProductItem";
-import { useProducts } from "../lib/hooks/useProducts";
 import ProductsSkeleton from "../components/ProductsSkeleton";
+import { useProducts } from "../lib/providers/ProductsContext";
 
 export default function Products() {
   const { products, loading, error } = useProducts();
