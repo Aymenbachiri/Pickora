@@ -1,150 +1,22 @@
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
 import { H2 } from "@/src/components/common/H2";
 import { MyText } from "@/src/components/common/MyText";
 import { MyView } from "@/src/components/common/MyView";
-import { useProduct } from "@/src/lib/hooks/useProduct";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { Text, TextInput, Button, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { AntDesign } from "@expo/vector-icons";
-import { Toaster, toast } from "sonner-native";
-import { useEffect, useState } from "react";
-import { useUser } from "@clerk/clerk-expo";
-import { API_URL } from "@/src/components/common/Constants";
-import { ProductFormData, productSchema } from "@/src/lib/schema/productSchema";
-import { useProductUpdate } from "@/src/lib/providers/ProductUpdateProvider ";
-
-async function updateProduct(data: ProductFormData, id: string): Promise<void> {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      const errorMessage = errorText
-        ? JSON.parse(errorText)?.error || errorText
-        : `Failed to update product: ${response.statusText}`;
-
-      throw new Error(errorMessage);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Product update error:", error);
-    throw error;
-  }
-}
+import { useEditProduct } from "@/src/lib/hooks/useEditProduct";
 
 export default function EditProduct() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { product, loading: productLoading, error } = useProduct({ id });
-  const { user } = useUser();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const { triggerRefresh } = useProductUpdate();
-
   const {
     control,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      category: "men",
-      imageUrl: "",
-      price: 0,
-      creator: "Unknown Creator",
-    },
-    mode: "onChange",
-  });
-
-  // Populate form with existing product data when loaded
-  useEffect(() => {
-    if (product) {
-      setValue("title", product.title);
-      setValue("description", product.description);
-      setValue("category", product.category);
-      setValue("price", product.price);
-      setValue("imageUrl", product.imageUrl);
-    }
-  }, [product, setValue]);
-
-  // Set creator name when user is available
-  useEffect(() => {
-    if (user) {
-      const creatorName = user.firstName || user.emailAddresses[0].emailAddress;
-      setValue("creator", creatorName);
-    }
-  }, [user, setValue]);
-
-  const onSubmit = async (data: ProductFormData) => {
-    if (!user) {
-      toast.error("You must be logged in to edit products");
-      return;
-    }
-
-    if (!id) {
-      toast.error("Product ID is missing");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await toast.promise(updateProduct(data, id), {
-        loading: "Updating product...",
-        success: () => {
-          reset();
-          triggerRefresh();
-          router.push("/my-products");
-          return "Product updated successfully!";
-        },
-        error: (error) => {
-          console.error("Product update error:", error);
-          return "Error updating product";
-        },
-      });
-    } catch (error) {
-      console.error("Final catch block error:", error);
-      toast.error("An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmitWithLogging = () => {
-    if (Object.keys(errors).length > 0) {
-      console.error("Form errors before submission:", errors);
-
-      Alert.alert(
-        "Form Validation Errors",
-        Object.entries(errors)
-          .map(([field, error]) => `${field}: ${error.message}`)
-          .join("\n")
-      );
-      return;
-    }
-
-    handleSubmit(onSubmit)();
-  };
+    error,
+    errors,
+    productLoading,
+    handleSubmitWithAlerts,
+    loading,
+  } = useEditProduct({ id });
 
   if (error) {
     return (
@@ -156,9 +28,9 @@ export default function EditProduct() {
 
   if (productLoading) {
     return (
-      <MyView className="flex-1 bg-white p-4 dark:bg-black">
-        <MyView className="w-full h-64 bg-gray-300 dark:bg-gray-600 rounded-lg mb-4 animate-pulse" />
-        <MyView className="w-3/4 h-6 bg-gray-300 dark:bg-gray-600  rounded mb-2 animate-pulse" />
+      <MyView className="flex-1 bg-white p-4 animate-pulse dark:bg-black">
+        <MyView className="w-full h-64 bg-gray-300  dark:bg-gray-600 rounded-lg mb-4 animate-pulse" />
+        <MyView className="w-3/4 h-6 bg-gray-300  dark:bg-gray-600  rounded mb-2 animate-pulse" />
         <MyView className="w-1/2 h-6 bg-gray-300 dark:bg-gray-600 rounded mb-4 animate-pulse" />
         <MyView className="w-full h-24 bg-gray-300 dark:bg-gray-600 rounded mb-4 animate-pulse" />
         <MyView className="w-3/4 h-12 bg-gray-300 dark:bg-gray-600 rounded-lg mt-8 animate-pulse" />
@@ -168,7 +40,6 @@ export default function EditProduct() {
 
   return (
     <ScrollView className="flex-1 bg-white p-4 dark:bg-black">
-      <Toaster position="bottom-center" />
       <MyView className="flex flex-col gap-4 justify-center items-center">
         {/* Title */}
         <MyView className="flex w-full flex-col gap-2">
@@ -323,7 +194,7 @@ export default function EditProduct() {
         <MyView className="mt-6">
           <Button
             title="Update Product"
-            onPress={handleSubmitWithLogging}
+            onPress={handleSubmitWithAlerts}
             disabled={loading}
           />
         </MyView>

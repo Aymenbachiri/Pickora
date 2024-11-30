@@ -1,114 +1,109 @@
-import { MyView } from "@/src/components/common/MyView";
-import { useSignUp } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Button, TextInput, ActivityIndicator } from "react-native";
-import { toast, Toaster } from "sonner-native";
-import "react-native-gesture-handler";
+import { Link, type RelativePathString } from "expo-router";
+import { Button, TextInput, View, Text } from "react-native";
 import { H2 } from "@/src/components/common/H2";
+import { Controller } from "react-hook-form";
+import { useSignUpUser } from "@/src/lib/hooks/useSignUpUser";
 
 export default function SignUp() {
-  const { isLoaded, signUp, setActive } = useSignUp();
-  const router = useRouter();
-
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState("");
-
-  const onSignUpPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-
-    try {
-      await signUp.create({
-        emailAddress,
-        password,
-      });
-
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-      setPendingVerification(true);
-      toast.success("user signed up successfully");
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-      toast.error(JSON.stringify(err, null, 2));
-    }
-  };
-
-  const onPressVerify = async () => {
-    if (!isLoaded) {
-      return;
-    }
-
-    try {
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      if (completeSignUp.status === "complete") {
-        await setActive({ session: completeSignUp.createdSessionId });
-        toast.success("code has been verified successfully");
-        router.replace("/profile");
-      } else {
-        console.error(JSON.stringify(completeSignUp, null, 2));
-        toast.error(JSON.stringify(completeSignUp, null, 2));
-      }
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-      toast.error(JSON.stringify(err, null, 2));
-    }
-  };
+  const {
+    pendingVerification,
+    code,
+    setCode,
+    onPressVerify,
+    control,
+    errors,
+    handleSubmit,
+  } = useSignUpUser();
 
   return (
-    <>
-      <Toaster position="bottom-center" />
-      <MyView className="flex-1 dark:bg-black">
-        {!pendingVerification && (
-          <MyView className="flex flex-1 w-full gap-4 justify-center items-center">
-            <MyView className="flex w-full flex-col gap-2">
-              <H2 className="text-start">Email</H2>
-              <TextInput
-                autoCapitalize="none"
-                value={emailAddress}
-                placeholder="aymen.bachiri99@gmail.com"
-                onChangeText={(email) => setEmailAddress(email)}
-                className="dark:bg-white border p-4 w-full"
-              />
-            </MyView>
-
-            <MyView className="flex w-full flex-col gap-2">
-              <H2 className="text-start">Password</H2>
-
-              <TextInput
-                value={password}
-                placeholder="******"
-                secureTextEntry={true}
-                onChangeText={(password) => setPassword(password)}
-                className="dark:bg-white border p-4 w-full"
-              />
-            </MyView>
-            <Button title="Sign Up" onPress={onSignUpPress} />
-          </MyView>
-        )}
-        {pendingVerification && (
-          <MyView className="flex flex-1 w-full gap-4 justify-center items-center">
-            <H2 className="text-start">Enter the code sent to your email</H2>
-            <TextInput
-              value={code}
-              placeholder="Code..."
-              onChangeText={(code) => setCode(code)}
-              className="dark:bg-white border p-4 w-full"
+    <View className="flex-1 bg-white gap-3 dark:bg-black px-6 py-10">
+      {!pendingVerification && (
+        <>
+          <View className="bg-white flex flex-col mt-8 gap-3 dark:bg-black">
+            <H2>Email</H2>
+            <Controller
+              control={control}
+              name="emailAddress"
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextInput
+                  autoCapitalize="none"
+                  value={value}
+                  placeholder="aymen.bachiri99@gmail.com"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  className="w-full dark:bg-white rounded-md p-2 border border-gray-300"
+                  style={{
+                    borderColor: errors.emailAddress ? "red" : "black",
+                    borderWidth: 1,
+                  }}
+                />
+              )}
             />
-            <Button title="Verify Email" onPress={onPressVerify} />
-          </MyView>
-        )}
-      </MyView>
-    </>
+            {errors.emailAddress && (
+              <Text className="text-red-500 text-sm">
+                {errors.emailAddress.message}
+              </Text>
+            )}
+          </View>
+
+          <View className="bg-white flex flex-col mt-8 gap-3 dark:bg-black">
+            <H2>Password</H2>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextInput
+                  value={value}
+                  placeholder="Password..."
+                  secureTextEntry={true}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  className="w-full dark:bg-white rounded-md p-2 border border-gray-300"
+                  style={{
+                    borderColor: errors.emailAddress ? "red" : "black",
+                    borderWidth: 1,
+                  }}
+                />
+              )}
+            />
+            {errors.password && (
+              <Text className="text-red-500 text-sm">
+                {errors.password.message}
+              </Text>
+            )}
+          </View>
+
+          {errors.root && (
+            <Text className="text-red-500 text-sm">{errors.root.message}</Text>
+          )}
+
+          <View className="mt-4">
+            <Button title="Sign Up" onPress={handleSubmit} />
+          </View>
+
+          <View className="dark:text-white flex flex-row gap-4 mt-8">
+            <Text className="dark:text-white">Alredy Have an account?</Text>
+            <Link
+              className="dark:text-white underline"
+              href={"/(auth)/signin" as RelativePathString}
+            >
+              <Text>Sign in</Text>
+            </Link>
+          </View>
+        </>
+      )}
+
+      {pendingVerification && (
+        <>
+          <TextInput
+            value={code}
+            placeholder="Code..."
+            onChangeText={(code) => setCode(code)}
+            className="w-full dark:bg-white rounded-md p-2"
+          />
+          <Button title="Verify Email" onPress={onPressVerify} />
+        </>
+      )}
+    </View>
   );
 }

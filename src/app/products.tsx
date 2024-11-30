@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import { H1 } from "../components/common/H1";
 import { MyView } from "../components/common/MyView";
 import { MyText } from "../components/common/MyText";
@@ -18,21 +18,26 @@ export default function Products() {
   }
 
   return (
-    <ScrollView
-      style={{ flex: 1, height: "100%" }}
-      className="flex-1 bg-white dark:bg-black"
-    >
-      <MyView>
-        <H1 className="text-center mt-2">Our Latest Products</H1>
-        <MyText className="mt-4">
-          Explore our range of high-quality products, each carefully selected to
-          meet your needs.
-        </MyText>
-      </MyView>
-      {loading && [...Array(5)].map(() => <ProductsSkeleton />)}
-      {products.map((product) => (
-        <ProductItem product={product} key={Math.random()} />
-      ))}
-    </ScrollView>
+    <MyView style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView>
+        <MyView>
+          <H1 className="text-center mt-2">Our Latest Products</H1>
+          <MyText className="my-4">
+            Explore our range of high-quality products, each carefully selected
+            to meet your needs.
+          </MyText>
+        </MyView>
+      </ScrollView>
+      <FlatList
+        data={loading ? [...Array(5)] : products}
+        renderItem={({ item, index }) =>
+          loading ? <ProductsSkeleton /> : <ProductItem product={item} />
+        }
+        keyExtractor={(item, index) =>
+          loading ? index.toString() : item.id.toString()
+        }
+        contentContainerStyle={{ paddingBottom: 16 }}
+      />
+    </MyView>
   );
 }

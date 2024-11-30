@@ -1,76 +1,78 @@
 import { H2 } from "@/src/components/common/H2";
-import { MyText } from "@/src/components/common/MyText";
-import { MyView } from "@/src/components/common/MyView";
-import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
-import { Button, TextInput } from "react-native";
-import { toast, Toaster } from "sonner-native";
+import { useSignInUser } from "@/src/lib/hooks/useSignInUser";
+import { Link, type RelativePathString } from "expo-router";
+import { Controller } from "react-hook-form";
+import { Button, Text, TextInput, View } from "react-native";
 
 export default function SignIn() {
-  const { signIn, setActive, isLoaded } = useSignIn();
-  const router = useRouter();
-
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onSignInPress = useCallback(async () => {
-    if (!isLoaded) {
-      return;
-    }
-
-    try {
-      const signInAttempt = await signIn.create({
-        identifier: emailAddress.trim().toLowerCase(), // Normalize the email
-        password,
-      });
-
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        toast.success("Sign-in successful!");
-        router.replace("/profile");
-      } else {
-        console.log("Sign in status:", signInAttempt.status);
-        // Handle incomplete status
-      }
-    } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
-      toast.error(err.errors?.[0]?.message || "Sign in failed");
-    }
-  }, [isLoaded, emailAddress, password]);
+  const { control, errors, handleSubmit } = useSignInUser();
 
   return (
-    <MyView className="flex-1 dark:bg-black justify-center items-center gap-6">
-      <Toaster position="bottom-center" />
-      <MyView className="flex w-full flex-col gap-2">
-        <H2 className="text-start">Email</H2>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="aymen.bachiri99@gmail.com"
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-          className="dark:bg-white border p-4 w-full"
+    <View className="flex-1 flex p-2 items-center justify-center dark:bg-black">
+      <View className="flex flex-col w-full gap-3">
+        <H2>Email</H2>
+        <Controller
+          control={control}
+          name="emailAddress"
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextInput
+              autoCapitalize="none"
+              value={value}
+              placeholder="aymen.bachiri99@gmail.com"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              className="w-full dark:bg-white rounded-md p-2 border border-gray-300"
+              style={{
+                borderColor: errors.emailAddress ? "red" : "black",
+                borderWidth: 1,
+              }}
+            />
+          )}
         />
-      </MyView>
-
-      <MyView className="flex w-full flex-col gap-2">
-        <H2 className="text-start">Password</H2>
-
-        <TextInput
-          value={password}
-          placeholder="******"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-          className="dark:bg-white border p-4 w-full"
+        {errors.emailAddress && (
+          <Text className="text-red-500 text-sm">
+            {errors.emailAddress.message}
+          </Text>
+        )}
+      </View>
+      <View className="flex flex-col w-full gap-3 mt-8">
+        <H2>Password</H2>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextInput
+              value={value}
+              placeholder="Password..."
+              secureTextEntry={true}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              className="w-full dark:bg-white rounded-md p-2 border border-gray-300"
+              style={{
+                borderColor: errors.password ? "red" : "black",
+                borderWidth: 1,
+              }}
+            />
+          )}
         />
-      </MyView>
-      <Button title="Sign In" onPress={onSignInPress} />
-      <MyView className="flex justify-between items-center gap-4 flex-row">
-        <MyText>Don't have an account?</MyText>
-        <Link href={"/(auth)/signup"}>
-          <MyText className="underline">Sign up</MyText>
+        {errors.password && (
+          <Text className="text-red-500 text-sm">
+            {errors.password.message}
+          </Text>
+        )}
+      </View>
+      <View className="mt-8">
+        <Button title="Sign In" onPress={handleSubmit} />
+      </View>
+      <View className="dark:text-white flex flex-row gap-4 mt-8">
+        <Text className="dark:text-white">Don't have an account?</Text>
+        <Link
+          className="dark:text-white underline"
+          href={"/(auth)/signup" as RelativePathString}
+        >
+          <Text>Sign up</Text>
         </Link>
-      </MyView>
-    </MyView>
+      </View>
+    </View>
   );
 }

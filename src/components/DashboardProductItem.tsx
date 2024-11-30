@@ -6,11 +6,10 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React from "react";
 import type { Product } from "../lib/types/types";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { deleteProduct } from "../lib/helpers/deleteProduct";
-import { Link, RelativePathString } from "expo-router";
+import { Link, type RelativePathString } from "expo-router";
 
 export default function DashboardProductItem({
   product,

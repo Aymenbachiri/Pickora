@@ -63,7 +63,7 @@ export default function ProductItem({ product }: { product: Product }) {
               </View>
               <TouchableOpacity
                 onPress={handleClick}
-                className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                className="w-full bg-indigo-600 mb-3 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
               >
                 <Text className="text-center text-white font-bold">
                   Add to Cart

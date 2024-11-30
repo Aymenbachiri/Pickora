@@ -37,12 +37,13 @@ export default function MyProducts() {
           Explore your products, where you can easily edit them and delete them.
         </MyText>
       </MyView>
-      {loading && [...Array(5)].map(() => <ProductsSkeleton />)}
+      {loading &&
+        [...Array(5)].map(() => <ProductsSkeleton key={Math.random()} />)}
       {products.length > 0 ? (
         products.map((product) => (
           <DashboardProductItem
             product={product}
-            key={Math.random()}
+            key={product.id}
             onDelete={handleDeleteProduct}
           />
         ))

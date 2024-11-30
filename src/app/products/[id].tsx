@@ -1,13 +1,21 @@
 import { H1 } from "@/src/components/common/H1";
 import { MyText } from "@/src/components/common/MyText";
 import { MyView } from "@/src/components/common/MyView";
+import { useCart } from "@/src/lib/hooks/useCart";
 import { useProduct } from "@/src/lib/hooks/useProduct";
+import { type Product } from "@/src/lib/types/types";
 import { useLocalSearchParams } from "expo-router";
-import { Image } from "react-native";
+import { Alert, Image, TouchableOpacity } from "react-native";
 
 export default function Product() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { product, loading, error } = useProduct({ id });
+  const { handleAddToCart } = useCart();
+
+  const handleClick = () => {
+    handleAddToCart(product as Product);
+    Alert.alert(`${product?.title} added to cart successfully!`);
+  };
 
   if (error) {
     return (
@@ -44,11 +52,11 @@ export default function Product() {
         ${product?.price.toFixed(2)}
       </MyText>
       <MyText className="text-gray-700">{product?.description}</MyText>
-      <MyView className="mt-8">
+      <TouchableOpacity onPress={handleClick} className="mt-8">
         <MyText className="bg-blue-500 text-white py-3 text-center rounded-lg">
           Add to Cart
         </MyText>
-      </MyView>
+      </TouchableOpacity>
     </MyView>
   );
 }
