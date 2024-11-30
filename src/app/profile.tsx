@@ -1,14 +1,14 @@
 import { MyView } from "../components/common/MyView";
 import { H1 } from "../components/common/H1";
 import { H2 } from "../components/common/H2";
-import { useColorScheme } from "nativewind";
 import { Button, StatusBar, TouchableOpacity } from "react-native";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
+import { useTheme } from "../lib/providers/ThemeProvider";
 
 export default function Profile() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { colorScheme, toggleColorScheme } = useTheme();
   const { user, isSignedIn } = useUser();
   const { signOut } = useAuth();
 
