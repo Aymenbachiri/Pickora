@@ -34,12 +34,16 @@ export default function Profile() {
         <H2>{user?.emailAddresses[0].emailAddress}</H2>
 
         <MyView className="mt-4 flex flex-col gap-4">
-          <Link href="/sell-product">
-            <H2>Sell product</H2>
-          </Link>
-          <Link href="/my-products">
-            <H2>My products</H2>
-          </Link>
+          {isSignedIn && (
+            <>
+              <Link href="/sell-product">
+                <H2>Sell product</H2>
+              </Link>
+              <Link href="/my-products">
+                <H2>My products</H2>
+              </Link>
+            </>
+          )}
           <Link href="/cart">
             <H2>Cart</H2>
           </Link>

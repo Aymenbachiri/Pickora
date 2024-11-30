@@ -45,10 +45,17 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="(auth)"
+          name="(auth)/signin"
           options={{
             href: null,
-            title: "",
+            title: "Sign In",
+          }}
+        />
+        <Tabs.Screen
+          name="(auth)/signup"
+          options={{
+            href: null,
+            title: "Sign Up",
           }}
         />
         <Tabs.Screen
